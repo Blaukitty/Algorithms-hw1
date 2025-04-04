@@ -19,7 +19,7 @@ jobs:
 
     - name: Build GoogleTest
       run: |
-        cd /usr/src/gtest
+        cd /usr/src/googletest/googletest
         sudo cmake .
         sudo make
         sudo cp *.a /usr/lib
