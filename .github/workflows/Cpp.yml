@@ -13,16 +13,9 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-
-    - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y cmake g++ libgtest-dev
-
-    - name: Build GoogleTest
-      run: |
-        cd /usr/src/googletest/googletest
-        sudo cmake .
-        sudo make
-        sudo cp *.a /usr/lib
+      
+    - name: Install CMake and g++
+      run: sudo apt update && sudo apt install -y cmake g++
 
     - name: Configure CMake
       run: cmake -S . -B build
@@ -31,4 +24,4 @@ jobs:
       run: cmake --build build
 
     - name: Run tests
-      run: ./build/tests
+      run: ctest --test-dir build  
