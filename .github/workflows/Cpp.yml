@@ -17,8 +17,13 @@ jobs:
     - name: Install CMake and g++
       run: sudo apt update && sudo apt install -y cmake g++
 
-    - name: Configure CMake
-      run: cmake -S . -B build
+    - name: Configure and build manually
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+        make
+        ctest
 
     - name: Build project
       run: cmake --build build
