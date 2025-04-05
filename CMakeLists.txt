@@ -17,7 +17,7 @@ enable_testing()
 # Исходники
 add_executable(tests
     decoder_alg.cpp
-    test_ascii85.cpp
+    tests_ascii85.cpp
 )
 
 # Линковка GoogleTest
