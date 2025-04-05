@@ -15,9 +15,8 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 # Исходники
-add_executable(tests
+add_executable(decoder_alg.cpp
     test_ascii85.cpp
-    ascii85.cpp
 )
 
 # Линковка GoogleTest
