@@ -57,6 +57,7 @@ void decode(const string& input, ostream& out) {
         }
     }
     size_t i = 0;
+    string encoded = input;
     while (i < encoded.size()) {
         if (encoded[i] == 'z') {
             out.write("\0\0\0\0", 4);
