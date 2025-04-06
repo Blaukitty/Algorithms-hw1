@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <sstream>
 #include <string>
-#include "decoder_h.h"
+#include <decoder_h.h>
 
 using namespace std;
 
@@ -47,6 +47,14 @@ string encode(istream& in) {
 }
 
 void decode(const string& encoded, ostream& out) {
+    if (input.empty()) {                                 // для поиска ошибок
+        throw runtime_error("incorrect data for coding")
+    }
+    for (char c : input) {
+        if (c < '!' || c > 'u') {
+            throw runtime_error("Incorrect data for decoding: invalid character detected");
+        }
+    }
     size_t i = 0;
     while (i < encoded.size()) {
         if (encoded[i] == 'z') {
@@ -83,11 +91,12 @@ void decode(const string& encoded, ostream& out) {
 
 int main()
 {
-    string result = encode(cin); //закодировали
-    cout << "Encoded: -e " << result << "\n";
-
-    cout << "Deoded: -d ";
-    decode(result, cout);        //раскодировали
-
+    string result;
+    try {     result = encode(cin); // кодируем
+      cout << "Encode: -e " << result << "\n";
+      cout << "Decoded: -d ";     decode(result, cout); // пробуем декодировать
+  }
+    catch (const expection& e) {     cerr << "Decoding error: " << e.what() << "\n";
+      return 1; }
     return 0;
 }
