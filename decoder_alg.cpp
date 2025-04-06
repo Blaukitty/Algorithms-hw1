@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <sstream>
 #include <string>
+#include <stdexcept>
 #include "decoder_h.h"
 
 using namespace std;
@@ -46,9 +47,9 @@ string encode(istream& in) {
     return out.str();
 }
 
-void decode(const string& encoded, ostream& out) {
+void decode(const string& input, ostream& out) {
     if (input.empty()) {                                 // для поиска ошибок
-        throw runtime_error("incorrect data for coding")
+        throw runtime_error("incorrect data for coding");
     }
     for (char c : input) {
         if (c < '!' || c > 'u') {
@@ -96,7 +97,7 @@ int main()
       cout << "Encode: -e " << result << "\n";
       cout << "Decoded: -d ";     decode(result, cout); // пробуем декодировать
   }
-    catch (const expection& e) {     cerr << "Decoding error: " << e.what() << "\n";
+    catch (const exception& e) {     cerr << "Decoding error: " << e.what() << "\n";
       return 1; }
     return 0;
 }
