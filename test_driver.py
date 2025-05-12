@@ -1,5 +1,9 @@
 import base64, subprocess, os, pathlib
-
+'''base64 — нужен только ради функции a85encode, которая превращает «сырые» байты в строку ASCII-85.
+os — генерация случайных данных (os.urandom).
+subprocess — запуск собранной программы как отдельного процесса и получение её кода завершения/вывода.
+pathlib — удобная работа с путями (Path('build') / 'ascii85_cli').
+'''
 BIN = "./ascii85_cli"   # ← имя итогового бинаря после сборки
 def correct_data_test():
     raw = os.urandom(50)
