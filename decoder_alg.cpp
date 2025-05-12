@@ -1,12 +1,12 @@
 ﻿// decoder_alg.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 
+#include "decoder_h.h"
 #include <iostream>
 #include <array>
 #include <cstdint>
 #include <sstream>
 #include <string>
 #include <stdexcept>
-#include "decoder_h.h"
 
 using namespace std;
 
@@ -91,14 +91,14 @@ void decode(const string& input, ostream& out) {
     
 }
 
-int main()
-{
-    string result;
-    try {     result = encode(cin); // кодируем
-      cout << "Encode: -e " << result << "\n";
-      cout << "Decoded: -d ";     decode(result, cout); // пробуем декодировать
-  }
-    catch (const exception& e) {     cerr << "Decoding error: " << e.what() << "\n";
-      return 1; }
-    return 0;
-}
+//int main()
+//{
+//    string result;
+//     try {     result = encode(cin); // кодируем
+//       cout << "Encode: -e " << result << "\n";
+//       cout << "Decoded: -d ";     decode(result, cout); // пробуем декодировать
+//   }
+//     catch (const exception& e) {     cerr << "Decoding error: " << e.what() << "\n";
+//       return 1; }
+//     return 0;
+// }
