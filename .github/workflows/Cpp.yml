@@ -24,4 +24,7 @@ jobs:
       run: cmake --build build
 
     - name: Run tests
-      run: ctest --test-dir build  
+      run: ctest --test-dir build 
+      
+    - name: Run python tests
+      run: python tests_ascii85_cli.py build/ascii85_cli
