@@ -51,3 +51,15 @@ TEST(Ascii85Test, EmptyInput) {
 
     ASSERT_EQ(result, "~>");
 }
+
+TEST(Ascii85Test, DecodeInvalidStringThrows) {
+    std::string bad = "!!!***invalid***!!!~>";
+    std::stringstream out;
+    EXPECT_THROW(decode(bad, out), std::runtime_error);
+}
+
+TEST(Ascii85Test, DecodeEmptyThrows) {
+    std::string bad = "~>";
+    std::stringstream out;
+    EXPECT_THROW(decode(bad, out), std::runtime_error);
+}
