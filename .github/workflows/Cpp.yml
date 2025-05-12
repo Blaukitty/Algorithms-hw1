@@ -27,4 +27,4 @@ jobs:
       run: ctest --test-dir build 
       
     - name: Run python tests
-      run: python tests_ascii85_cli.py build/ascii85_cli
+      run: python tests_driver.py build/tests_ascii85_cli
