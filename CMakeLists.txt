@@ -22,8 +22,12 @@ add_executable(tests
 )
 target_link_libraries(tests
     ascii85
+    gtest
     gtest_main             # `gtest` подтягивается transitively
 )
 
 include(GoogleTest)
 gtest_discover_tests(tests)
+
+add_executable(ascii85_cli cli.cpp)
+target_link_libraries(ascii85_cli ascii85)
