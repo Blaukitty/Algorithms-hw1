@@ -22,22 +22,20 @@ def main() -> None:
         print(f"CLI not found: {cli}", file=sys.stderr)
         sys.exit(1)
 
-    # ---------- корректные данные ----------
-    raw      = os.urandom(64)
-    ascii85  = base64.a85encode(raw)
-    code_ok  = run_cli(cli, ascii85)
-    print("correct data: exit code =", code_ok)
-    if code_ok != 0:
-        sys.exit(1)
-
-    # ---------- некорректные данные ----------
-    bad      = b"!!!***invalid***data***!!!~>"  # запрещённые символы, но с "~>"
-    code_bad = run_cli(cli, bad)
+    # корректные данные
+    raw = os.urandom(64)
+    # ascii85 = base64.a85encode(raw)
+    code_ok = run_cli(r)
+    print("correct data: exit code =", code_ok.returncode)
+    assert resp.returncode ==0
+    
+    # некорректные данные 
+    bad = b"!!!***invalid***data***!!!~>"  # запрещённые символы, но с "~>"
+    code_bad = run_cli(bad)
     print("invalid data: exit code =", code_bad)
-    if code_bad == 0:
-        sys.exit(1)
+    assert resp.returncode !=0
 
-    print("python tests passed ✔︎")
+    print("python tests passed")
 
 if __name__ == "__main__":
     main()
