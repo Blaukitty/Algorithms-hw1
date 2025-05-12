@@ -16,7 +16,7 @@ TEST(Ascii85Test, EncodeSimpleText) {
 }
 
 TEST(Ascii85Test, EncodeAllZeroBytes) {
-    std::string input(4, '/0');
+    std::string input(4, '\0');
     std::stringstream ss(input);
 
     std::string result = encode(ss);
