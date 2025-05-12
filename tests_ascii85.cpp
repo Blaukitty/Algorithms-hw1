@@ -16,11 +16,10 @@ TEST(Ascii85Test, EncodeSimpleText) {
 }
 
 TEST(Ascii85Test, EncodeAllZeroBytes) {
-    std::string input = "\0\0\0\0";
+    std::string input(4, '/0');
     std::stringstream ss(input);
 
     std::string result = encode(ss);
-
     ASSERT_EQ(result, "z~>");  // "z" означает 4 нулевых байта
 }
 
