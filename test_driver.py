@@ -1,20 +1,43 @@
-import base64, subprocess, os, pathlib
-'''base64 — нужен только ради функции a85encode, которая превращает «сырые» байты в строку ASCII-85.
-os — генерация случайных данных (os.urandom).
-subprocess — запуск собранной программы как отдельного процесса и получение её кода завершения/вывода.
-pathlib — удобная работа с путями (Path('build') / 'ascii85_cli').
-'''
-BIN = "./ascii85_cli"   # ← имя итогового бинаря после сборки
-def correct_data_test():
-    raw = os.urandom(50)
-    ascii85 = base64.a85encode(raw)
-    r = subprocess.run([BIN], input=ascii85, stdout=subprocess.PIPE)
-    print("correct exit code =", r.returncode)
+import base64
+import os
+import subprocess
+import sys
+from pathlib import Path
 
-def invalid_data_test():
-    bad = b"!!! invalid***data !!!~>"      # добавили ~>
-    r   = subprocess.run([BIN], input=bad, stdout=subprocess.PIPE)
-    print("invalid exit code =", r.returncode)
+def run_cli(bin_path: Path, data: bytes) -> int:
+    """Запускает бинарь, передаёт data в stdin, возвращает код выхода."""
+    res = subprocess.run([bin_path],
+                         input=data,
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE)
+    return res.returncode
 
-correct_data_test()
-invalid_data_test()
+def main() -> None:
+    if len(sys.argv) < 2:
+        print("Usage: tests_ascii85_cli.py <path-to-cli>", file=sys.stderr)
+        sys.exit(1)
+
+    cli = Path(sys.argv[1]).resolve()
+    if not cli.is_file():
+        print(f"CLI not found: {cli}", file=sys.stderr)
+        sys.exit(1)
+
+    # ---------- корректные данные ----------
+    raw      = os.urandom(64)
+    ascii85  = base64.a85encode(raw)
+    code_ok  = run_cli(cli, ascii85)
+    print("correct data: exit code =", code_ok)
+    if code_ok != 0:
+        sys.exit(1)
+
+    # ---------- некорректные данные ----------
+    bad      = b"!!!***invalid***data***!!!~>"  # запрещённые символы, но с "~>"
+    code_bad = run_cli(cli, bad)
+    print("invalid data: exit code =", code_bad)
+    if code_bad == 0:
+        sys.exit(1)
+
+    print("python tests passed ✔︎")
+
+if __name__ == "__main__":
+    main()
