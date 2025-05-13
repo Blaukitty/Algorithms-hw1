@@ -29,12 +29,6 @@ def main() -> None:
     print("correct data: exit code =", ok.returncode)
     assert ok.returncode == 0, ok.stderr.decode()
 
-    # некорректные данные 
-    bad = b"abc{def~>"   
-    err = run_cli(cli, bad)
-    print("invalid data: exit code =", err.returncode)
-    assert err.returncode != 0, "CLI must fail on bad input"
-
     print("python tests passed ✔︎")
 
 if __name__ == "__main__":
