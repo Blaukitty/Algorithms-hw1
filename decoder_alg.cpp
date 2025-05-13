@@ -61,17 +61,16 @@ void decode(const string& input, ostream& out) {
     }
         
     size_t i = 0;
-    //string encoded = input;
-    while (i < encoded.size()) {
-        if (encoded[i] == 'z') {
-            out.write("\0\0\0\0", 4);
-            ++i;
-            continue;
-        }
+    while (i < body.size()) {
+            if (body[i] == 'z') {
+                out.write("\0\0\0\0", 4);
+                ++i;
+                continue;
+    }
 
-        size_t block_len = min(size_t(5), encoded.size() - i);
-        string block = encoded.substr(i, block_len);
-        i += block_len;
+    size_t block_len = std::min<size_t>(5, body.size() - i);
+    std::string block = body.substr(i, block_len);   // тут тоже body
+    i += block_len;
 
         while (block.size() < 5) {
             block += 'u';
