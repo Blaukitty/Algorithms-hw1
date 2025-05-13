@@ -47,51 +47,51 @@ string encode(istream& in) {
     return out.str();
 }
 
-void decode(const string& input, ostream& out) {
-    if (input.size() < 2 || input.substr(input.size() - 2) != "~>")
-        throw std::runtime_error("missing terminator ~>");
+void decode(const std::string& input, std::ostream& out)
+{
+    // 1.  отделяем тело и проверяем, есть ли "~>"
+    std::string body;
+    if (input.size() >= 2 && input.substr(input.size()-2) == "~>")
+        body = input.substr(0, input.size()-2);      // отбрасываем
+    else
+        body = input;                                // терминатора нет – тоже ок
 
-    std::string body = input.substr(0, input.size() - 2);
     if (body.empty())
         throw std::runtime_error("empty input");
 
-    for (char c : body) {
-        if (c != 'z' && (c < '!' || c > 'u'))
+    // 2.  диапазон символов ('z' – отдельный случай)
+    for (char c : body)
+        if (c!='z' && (c<'!' || c>'u'))
             throw std::runtime_error("invalid character detected");
-    }
-        
+
+    // 3.  ⬇︎ дальше идёт ваш прежний алгоритм,
+    //     заменили encoded → body и всё компилируется
     size_t i = 0;
     while (i < body.size()) {
-            if (body[i] == 'z') {
-                out.write("\0\0\0\0", 4);
-                ++i;
-                continue;
-    }
-
-    size_t block_len = std::min<size_t>(5, body.size() - i);
-    std::string block = body.substr(i, block_len);   // тут тоже body
-    i += block_len;
-
-        while (block.size() < 5) {
-            block += 'u';
+        if (body[i] == 'z') {
+            out.write("\0\0\0\0", 4);
+            ++i;
+            continue;
         }
 
-        uint32_t val0 = 0;
-        for (char c : block) {
-            val0 = val0 * 85 + (static_cast<uint8_t>(c) - 33);
-        }
+        size_t block_len = std::min<size_t>(5, body.size() - i);
+        std::string block = body.substr(i, block_len);
+        i += block_len;
 
-        array<char, 4> decoded = {
-            static_cast<char>((val0 >> 24) & 0xFF),
-            static_cast<char>((val0 >> 16) & 0xFF),
-            static_cast<char>((val0 >> 8) & 0xFF),
-            static_cast<char>(val0 & 0xFF)
+        while (block.size() < 5) block += 'u';
+
+        uint32_t val = 0;
+        for (char c : block)
+            val = val * 85 + (static_cast<uint8_t>(c) - 33);
+
+        char bytes[4] = {
+            static_cast<char>((val >> 24) & 0xFF),
+            static_cast<char>((val >> 16) & 0xFF),
+            static_cast<char>((val >>  8) & 0xFF),
+            static_cast<char>( val        & 0xFF)
         };
-
-        int my_bytes = block_len - 1;
-        out.write(decoded.data(), my_bytes);
+        out.write(bytes, block_len - 1);
     }
-    
 }
 
 //int main()
