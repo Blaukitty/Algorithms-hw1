@@ -30,7 +30,7 @@ def main() -> None:
     assert ok.returncode == 0, ok.stderr.decode()
 
     # некорректные данные 
-    bad = b"!!!***invalid***data***!!!~>"
+    bad = b"abc{def~>"   
     err = run_cli(cli, bad)
     print("invalid data: exit code =", err.returncode)
     assert err.returncode != 0, "CLI must fail on bad input"
