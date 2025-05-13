@@ -48,16 +48,20 @@ string encode(istream& in) {
 }
 
 void decode(const string& input, ostream& out) {
-    if (input.empty()) {                                 // для поиска ошибок
-        throw runtime_error("incorrect data for coding");
+    if (input.size() < 2 || input.substr(input.size() - 2) != "~>")
+        throw std::runtime_error("missing terminator ~>");
+
+    std::string body = input.substr(0, input.size() - 2);
+    if (body.empty())
+        throw std::runtime_error("empty input");
+
+    for (char c : body) {
+        if (c != 'z' && (c < '!' || c > 'u'))
+            throw std::runtime_error("invalid character detected");
     }
-    for (char c : input) {
-        if (c < '!' || c > 'u') {
-            throw runtime_error("Incorrect data for decoding: invalid character detected");
-        }
-    }
+        
     size_t i = 0;
-    string encoded = input;
+    //string encoded = input;
     while (i < encoded.size()) {
         if (encoded[i] == 'z') {
             out.write("\0\0\0\0", 4);
