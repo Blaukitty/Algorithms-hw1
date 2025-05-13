@@ -25,15 +25,15 @@ def main() -> None:
     # корректные данные
     raw = os.urandom(64)
     # ascii85 = base64.a85encode(raw)
-    code_ok = run_cli(raw)
+    code_ok = run_cli(BIN, raw)
     print("correct data: exit code =", code_ok.returncode)
-    assert code_ok.returncode ==0
+    assert code_ok.returncode ==0, code_ok.returncode()
     
     # некорректные данные 
     bad = b"!!!***invalid***data***!!!~>"  # запрещённые символы, но с "~>"
-    code_bad = run_cli(bad)
+    code_bad = run_cli(BIN, bad)
     print("invalid data: exit code =", code_bad)
-    assert code_bad.returncode !=0
+    assert code_bad.returncode !=0, "CLi должен был упасть"
 
     print("python tests passed")
 
