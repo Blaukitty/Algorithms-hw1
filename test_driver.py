@@ -3,7 +3,7 @@ import base64
 import os
 import subprocess
 import sys
-from pathlib import Path
+import pathlib 
 
 def run_cli(bin_path: Path, data: bytes) -> subprocess.CompletedProcess:
     ''' Запускает CLI, отдает байты в stdin, возвращает CompletedProcess.'''
