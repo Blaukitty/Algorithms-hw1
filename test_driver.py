@@ -5,7 +5,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-def run_cli(bin_path: Path, data: bytes) -> subprocess.completedProcess:
+def run_cli(bin_path: Path, data: bytes) -> subprocess.CompletedProcess:
     ''' Запускает CLI, отдает байты в stdin, возвращает CompletedProcess.'''
     return subprocess.run([cli_path],
                          input=data,
