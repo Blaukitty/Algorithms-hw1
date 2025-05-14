@@ -54,18 +54,18 @@ void decode(const std::string& input, std::ostream& out)
     if (input.size() >= 2 && input.substr(input.size()-2) == "~>")
         body = input.substr(0, input.size()-2);      // отбрасываем
     else
-        body = input;                                // терминатора нет – тоже ок
+        body = input;                               
 
     if (body.empty())
         throw std::runtime_error("empty input");
 
-    // 2.  диапазон символов ('z' – отдельный случай)
+    // 2.  проверка что все символы корректны и не z
     for (char c : body)
         if (c!='z' && (c<'!' || c>'u'))
             throw std::runtime_error("invalid character detected");
 
-    // 3.  ⬇︎ дальше идёт ваш прежний алгоритм,
-    //     заменили encoded → body и всё компилируется
+    
+    //  проверка z  
     size_t i = 0;
     while (i < body.size()) {
         if (body[i] == 'z') {
@@ -74,7 +74,7 @@ void decode(const std::string& input, std::ostream& out)
             continue;
         }
 
-        size_t block_len = std::min<size_t>(5, body.size() - i);
+        size_t block_len = std::min<size_t>(5, body.size() - i);  // разбили строку по 5
         std::string block = body.substr(i, block_len);
         i += block_len;
 
